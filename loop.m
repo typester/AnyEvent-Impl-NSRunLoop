@@ -57,10 +57,44 @@
         case NSStreamEventHasBytesAvailable:
             break;
         default:
-            NSLog(@"ignore event: %d", eventCode);
+            //NSLog(@"ignore event: %d", eventCode);
             return;
     }
 
+    // clear streams
+    [read_stream close];
+    [read_stream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                                     forMode:NSDefaultRunLoopMode];
+    [read_stream release];
+    read_stream = nil;
+
+    [write_stream close];
+    [write_stream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                                     forMode:NSDefaultRunLoopMode];
+    [write_stream release];
+    write_stream = nil;
+
+    // recreate watcher
+    CFStreamCreatePairWithSocket(kCFAllocatorDefault, fd, mode == 0 ? &read_stream : NULL, mode == 1 ? &write_stream : NULL);
+    if ((mode == 0 && read_stream) || (mode == 1 && write_stream)) {
+        read_stream = [read_stream retain];
+        write_stream = [write_stream retain];
+
+        if (0 == mode) {
+            [read_stream setDelegate:self];
+            [read_stream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                   forMode:NSDefaultRunLoopMode];
+            [read_stream open];
+        }
+        else {
+            [write_stream setDelegate:self];
+            [write_stream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                                    forMode:NSDefaultRunLoopMode];
+            [write_stream open];
+        }
+    }
+
+    // callback
     dSP;
 
     ENTER;
@@ -203,7 +237,7 @@ XS(add_io) {
         io->write_stream = [write_stream retain];
         io->cb = SvREFCNT_inc(sv_cb);
 
-        if (0 == SvIV(sv_mode)) {
+        if (0 == mode) {
             [io->read_stream setDelegate:io];
             [io->read_stream scheduleInRunLoop:[NSRunLoop currentRunLoop]
                                        forMode:NSDefaultRunLoopMode];
