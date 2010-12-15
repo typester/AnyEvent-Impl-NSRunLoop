@@ -1,8 +1,39 @@
 package AnyEvent::Impl::NSRunLoop;
 use strict;
 use warnings;
+use Carp;
+use XSLoader;
 
 our $VERSION = '0.01';
+
+BEGIN {
+    $ENV{PERL_ANYEVENT_MODEL} = 'NSRunLoop';
+};
+
+XSLoader::load __PACKAGE__, $VERSION;
+
+sub timer {
+    my ($class, %arg) = @_;
+
+    my $cb    = $arg{cb};
+    my $ival  = $arg{interval} || 0;
+    my $after = $arg{after} || 0;
+
+    my $timer = __add_timer(bless({}), $after, $ival, $cb);
+    bless \\$timer, 'AnyEvent::Impl::NSRunLoop::timer';
+}
+
+sub AnyEvent::Impl::NSRunLoop::timer::DESTROY {
+    __remove_timer($${$_[0]});
+}
+
+sub DESTROY {
+    __stop_loop();
+}
+
+1;
+
+__END__
 
 =head1 NAME
 
@@ -36,5 +67,3 @@ The full text of the license can be found in the
 LICENSE file included with this module.
 
 =cut
-
-1;
