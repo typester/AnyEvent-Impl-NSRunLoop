@@ -12,6 +12,22 @@ BEGIN {
 
 XSLoader::load __PACKAGE__, $VERSION;
 
+sub io {
+    my ($class, %arg) = @_;
+
+    my $fd = fileno($arg{fh});
+    defined $fd or $fd = $arg{fh};
+
+    my $mode = $arg{poll} eq 'r' ? 0 : 1;
+    my $io = __add_io(bless({}), $fd, $mode, $arg{cb});
+
+    bless \\$io, 'AnyEvent::Impl::NSRunLoop::io';
+}
+
+sub AnyEvent::Impl::NSRunLoop::io::DESTROY {
+    __remove_io($${$_[0]});
+}
+
 sub timer {
     my ($class, %arg) = @_;
 
