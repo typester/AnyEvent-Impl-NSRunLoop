@@ -1,4 +1,5 @@
 Revision history for Perl extension AnyEvent::Impl::NSRunLoop
 
-  0.01  Tue Dec 14 19:09:39 2010
-        - original version
+0.01 2010-12-16T14:55:57+09:00  
+     - initial release
+
