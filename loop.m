@@ -148,7 +148,7 @@ XS(stop_loop) {
 XS(add_timer) {
     dXSARGS;
 
-    if (items < 3) {
+    if (items < 4) {
         Perl_croak(aTHX_ "Usage: add_timer($obj, $after, $interval, $cb)");
     }
 
