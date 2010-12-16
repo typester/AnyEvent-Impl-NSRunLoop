@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use XSLoader;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 BEGIN {
     $ENV{PERL_ANYEVENT_MODEL} = 'NSRunLoop';
@@ -76,10 +76,10 @@ For example, using this module with L<Cocoa::Growl>, you can handle growl click 
     
     # show growl notification
     growl_notify(
-        notificationName => 'Notification Test',
-        title            => 'Hello!',
-        description      => 'Growl world!',
-        onClick          => sub {
+        name        => 'Notification Test',
+        title       => 'Hello!',
+        description => 'Growl world!',
+        on_click    => sub {
             warn 'clicked!';
             $cv->send;
         },
