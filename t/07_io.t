@@ -2,6 +2,9 @@ use AnyEvent;
 use AnyEvent::Util;
 use AnyEvent::Impl::NSRunLoop;
 
+use Test::More;
+plan skip_all => 'TODO';
+
 $| = 1; print "1..18\n";
 
 print "ok 1\n";

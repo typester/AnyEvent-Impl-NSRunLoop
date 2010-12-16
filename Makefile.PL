@@ -5,8 +5,11 @@ assertos 'MacOSX';
 name 'AnyEvent-Impl-NSRunLoop';
 all_from 'lib/AnyEvent/Impl/NSRunLoop.pm';
 
+requires 'AnyEvent' => '5.29';
+
 test_requires 'Test::More' => '0.88';
-author_tests('xt');
+tests 't/*.t t/*/*.t';
+author_tests 'xt';
 
 auto_set_repository;
 

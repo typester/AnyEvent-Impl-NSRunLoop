@@ -1,6 +1,9 @@
 use utf8;
 use AnyEvent::Util;
 
+use Test::More;
+plan skip_all => 'TODO';
+
 $| = 1; print "1..11\n";
 
 print "ok 1\n";

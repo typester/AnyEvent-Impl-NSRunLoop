@@ -29,12 +29,11 @@ t/03_child.t
 t/04_condvar.t
 t/05_dns.t
 t/06_socket.t
+t/07_io.t
+t/08_idna.t
+t/handle/01_readline.t
 t/handle/02_write.t
 t/handle/03_http_req.t
 t/handle/04_listen.t
-xt/07_io.t
-xt/08_idna.t
-xt/handle/01_readline.t
 xt/pod.t
-xt/pod_coverage.t
 xt/pod_spell.t

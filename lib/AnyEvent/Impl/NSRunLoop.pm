@@ -1,7 +1,6 @@
 package AnyEvent::Impl::NSRunLoop;
 use strict;
 use warnings;
-use Carp;
 use XSLoader;
 
 our $VERSION = '0.01';
@@ -51,22 +50,51 @@ sub DESTROY {
 
 __END__
 
+=for stopwords API AnyEvent NSRunLoop github
+
 =head1 NAME
 
-AnyEvent::Impl::NSRunLoop - Module abstract (<= 44 characters) goes here
+AnyEvent::Impl::NSRunLoop - AnyEvent adaptor for Cocoa NSRunLoop
 
 =head1 SYNOPSIS
 
-  use AnyEvent::Impl::NSRunLoop;
-  blah blah blah
+    use AnyEvent;
+    use AnyEvent::Impl::NSRunLoop;
+    
+    # do something
 
 =head1 DESCRIPTION
 
-Stub documentation for this module was created by ExtUtils::ModuleMaker.
-It looks like the author of the extension was negligent enough
-to leave the stub unedited.
+This module provides NSRunLoop support to AnyEvent.
 
-Blah blah blah.
+NSRunLoop is an event loop for Cocoa application. 
+By using this module, you can use Cocoa based API in your AnyEvent application.
+
+For example, using this module with L<Cocoa::Growl>, you can handle growl click event.
+
+    my $cv = AnyEvent->condvar;
+    
+    # show growl notification
+    growl_notify(
+        notificationName => 'Notification Test',
+        title            => 'Hello!',
+        description      => 'Growl world!',
+        onClick          => sub {
+            warn 'clicked!';
+            $cv->send;
+        },
+    );
+    
+    $cv->recv;
+
+Please look at L<Cocoa::Growl> documentation for more detail.
+
+=head1 NOTICE
+
+This module is in early development phase.
+The implementation is not completed and alpha quality. See also skipped test cases in test directory.
+
+Patches and suggestions are always welcome, let me know by email or on github :)
 
 =head1 AUTHOR
 
