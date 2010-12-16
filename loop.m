@@ -291,6 +291,7 @@ XS(remove_io) {
 
         [io->read_stream release];
         [io->write_stream release];
+        SvREFCNT_dec(io->cb);
         [io release];
     }
 
