@@ -5,7 +5,7 @@ use XSLoader;
 
 use AnyEvent;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 BEGIN {
     push @AnyEvent::REGISTRY, [AnyEvent::Impl::NSRunLoop:: => AnyEvent::Impl::NSRunLoop::];

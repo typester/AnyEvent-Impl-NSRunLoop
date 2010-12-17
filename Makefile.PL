@@ -16,6 +16,9 @@ auto_set_repository;
 use_ppport '3.19';
 cc_append_to_libs '-lobjc';
 
+# i don't know why but without this occuered compilation error on OSX system perl
+cc_append_to_ccflags '-D__QUICKDRAWAPI__';
+
 makemaker_args->{dynamic_lib} = {
     OTHERLDFLAGS => '-framework Foundation',
 };
