@@ -3,13 +3,14 @@ use strict;
 use warnings;
 use XSLoader;
 
+use AnyEvent;
+
 our $VERSION = '0.02';
 
 BEGIN {
-    $ENV{PERL_ANYEVENT_MODEL} = 'NSRunLoop';
+    push @AnyEvent::REGISTRY, [AnyEvent::Impl::NSRunLoop:: => AnyEvent::Impl::NSRunLoop::];
+    XSLoader::load __PACKAGE__, $VERSION;
 };
-
-XSLoader::load __PACKAGE__, $VERSION;
 
 sub io {
     my ($class, %arg) = @_;
