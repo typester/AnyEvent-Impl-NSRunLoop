@@ -5,7 +5,7 @@ use warnings;
 use AnyEvent;
 use Cocoa::EventLoop;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 BEGIN {
     push @AnyEvent::REGISTRY, [AnyEvent::Impl::NSRunLoop:: => AnyEvent::Impl::NSRunLoop::];
