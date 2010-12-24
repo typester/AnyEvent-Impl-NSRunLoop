@@ -1,50 +1,33 @@
 package AnyEvent::Impl::NSRunLoop;
 use strict;
 use warnings;
-use XSLoader;
 
 use AnyEvent;
+use Cocoa::EventLoop;
 
 our $VERSION = '0.03';
 
 BEGIN {
     push @AnyEvent::REGISTRY, [AnyEvent::Impl::NSRunLoop:: => AnyEvent::Impl::NSRunLoop::];
-    XSLoader::load __PACKAGE__, $VERSION;
-};
+}
 
 sub io {
     my ($class, %arg) = @_;
-
-    my $fd = fileno($arg{fh});
-    defined $fd or $fd = $arg{fh};
-
-    my $mode = $arg{poll} eq 'r' ? 0 : 1;
-    my $io = __add_io(bless({}), $fd, $mode, $arg{cb});
-
-    bless \\$io, 'AnyEvent::Impl::NSRunLoop::io';
-}
-
-sub AnyEvent::Impl::NSRunLoop::io::DESTROY {
-    __remove_io($${$_[0]});
+    Cocoa::EventLoop->io(%arg);
 }
 
 sub timer {
     my ($class, %arg) = @_;
-
-    my $cb    = $arg{cb};
-    my $ival  = $arg{interval} || 0;
-    my $after = $arg{after} || 0;
-
-    my $timer = __add_timer(bless({}), $after, $ival, $cb);
-    bless \\$timer, 'AnyEvent::Impl::NSRunLoop::timer';
+    Cocoa::EventLoop->timer(%arg);
 }
 
-sub AnyEvent::Impl::NSRunLoop::timer::DESTROY {
-    __remove_timer($${$_[0]});
+sub loop {
+    Cocoa::EventLoop->run;
 }
 
-sub DESTROY {
-    __stop_loop();
+sub one_event {
+    # this actually is not one event, but it's unable to handle it correctly at Cocoa 
+    Cocoa::EventLoop->run_while(0.1);
 }
 
 1;

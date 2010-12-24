@@ -1,5 +1,8 @@
 Revision history for Perl extension AnyEvent::Impl::NSRunLoop
 
+0.04 2010-12-24T16:37:17+09:00
+     - move main logic to Cocoa::EventLoop and depends it.
+
 0.03 2010-12-17T14:00:59+09:00
      - use AnyEvent::Registry instead of set ENV
      - fix compilation error with OSX's system perl
